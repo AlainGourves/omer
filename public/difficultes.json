@@ -1,0 +1,137 @@
+[
+    {
+        "id": 5,
+        "count": 2,
+        "description": "",
+        "link": "https://omer.zagzig.fr/difficulte/difficile/",
+        "name": "Difficile",
+        "slug": "difficile",
+        "taxonomy": "difficulte",
+        "meta": [],
+        "acf": [],
+        "_links": {
+            "self": [
+                {
+                    "href": "https://omer.zagzig.fr/wp-json/wp/v2/difficulte/5",
+                    "targetHints": {
+                        "allow": [
+                            "GET"
+                        ]
+                    }
+                }
+            ],
+            "collection": [
+                {
+                    "href": "https://omer.zagzig.fr/wp-json/wp/v2/difficulte"
+                }
+            ],
+            "about": [
+                {
+                    "href": "https://omer.zagzig.fr/wp-json/wp/v2/taxonomies/difficulte"
+                }
+            ],
+            "wp:post_type": [
+                {
+                    "href": "https://omer.zagzig.fr/wp-json/wp/v2/recette?difficulte=5"
+                }
+            ],
+            "curies": [
+                {
+                    "name": "wp",
+                    "href": "https://api.w.org/{rel}",
+                    "templated": true
+                }
+            ]
+        }
+    },
+    {
+        "id": 3,
+        "count": 4,
+        "description": "",
+        "link": "https://omer.zagzig.fr/difficulte/facile/",
+        "name": "Facile",
+        "slug": "facile",
+        "taxonomy": "difficulte",
+        "meta": [],
+        "acf": [],
+        "_links": {
+            "self": [
+                {
+                    "href": "https://omer.zagzig.fr/wp-json/wp/v2/difficulte/3",
+                    "targetHints": {
+                        "allow": [
+                            "GET"
+                        ]
+                    }
+                }
+            ],
+            "collection": [
+                {
+                    "href": "https://omer.zagzig.fr/wp-json/wp/v2/difficulte"
+                }
+            ],
+            "about": [
+                {
+                    "href": "https://omer.zagzig.fr/wp-json/wp/v2/taxonomies/difficulte"
+                }
+            ],
+            "wp:post_type": [
+                {
+                    "href": "https://omer.zagzig.fr/wp-json/wp/v2/recette?difficulte=3"
+                }
+            ],
+            "curies": [
+                {
+                    "name": "wp",
+                    "href": "https://api.w.org/{rel}",
+                    "templated": true
+                }
+            ]
+        }
+    },
+    {
+        "id": 4,
+        "count": 5,
+        "description": "",
+        "link": "https://omer.zagzig.fr/difficulte/moyen/",
+        "name": "Moyen",
+        "slug": "moyen",
+        "taxonomy": "difficulte",
+        "meta": [],
+        "acf": [],
+        "_links": {
+            "self": [
+                {
+                    "href": "https://omer.zagzig.fr/wp-json/wp/v2/difficulte/4",
+                    "targetHints": {
+                        "allow": [
+                            "GET"
+                        ]
+                    }
+                }
+            ],
+            "collection": [
+                {
+                    "href": "https://omer.zagzig.fr/wp-json/wp/v2/difficulte"
+                }
+            ],
+            "about": [
+                {
+                    "href": "https://omer.zagzig.fr/wp-json/wp/v2/taxonomies/difficulte"
+                }
+            ],
+            "wp:post_type": [
+                {
+                    "href": "https://omer.zagzig.fr/wp-json/wp/v2/recette?difficulte=4"
+                }
+            ],
+            "curies": [
+                {
+                    "name": "wp",
+                    "href": "https://api.w.org/{rel}",
+                    "templated": true
+                }
+            ]
+        }
+    }
+]
