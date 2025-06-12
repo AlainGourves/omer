@@ -1,6 +1,7 @@
 <script>
-import SelectBase from './components/SelectBase.vue'
-import RecetteCard from './components/RecetteCard.vue'
+import SelectBase from './components/SelectBase.vue';
+import RecetteCard from './components/RecetteCard.vue';
+import CompteRecettes from './components/CompteRecettes.vue';
 
 const baseURL = 'https://omer.zagzig.fr/';
 const recettesURL = '/recettes.json';
@@ -12,12 +13,15 @@ export default {
   components: {
     SelectBase,
     RecetteCard,
+    CompteRecettes
   },
   data() {
     return {
       categories: [],
       difficultes: [],
       recettes: [],
+      selectedCategorie: null,
+      selectedDifficulte: null,
       totalRecettes: 0,
     }
   },
@@ -106,6 +110,14 @@ export default {
         console.error('Erreur lors de la récupération de l’image', error)
       }
     },
+
+    updateCategorie(value) {
+      console.log('updateCategorie', value);
+    },
+
+    updateDifficulte(value) {
+      console.log('updateDifficulte', value);
+    },
   },
   async mounted() {
     // Catégories
@@ -122,7 +134,6 @@ export default {
       recette.img.alt = imgInfos.altText;
       recette.img.width = imgInfos.width;
       recette.img.url = imgInfos.url;
-      console.log(`${imgInfos.url}`)
     })
   },
   computed: {},
@@ -131,20 +142,46 @@ export default {
 
 <template>
   <h1>Recettes</h1>
-  <select-base
-    name="categories"
-    label="Filtrer par catégorie :"
-    default="Toutes les catégories"
-    :options="categories"
-  />
-  <select-base
-    name="difficulte"
-    label="Filtrer par difficulté :"
-    default="Toutes les difficultés"
-    :options="difficultes"
-  />
+  <compte-recettes v-if="totalRecettes > 0" :total="totalRecettes" />
+  <div class="filtres">
+    <select-base
+      name="categorie"
+      label="Filtrer par catégorie :"
+      default="Toutes les catégories"
+      :options="categories"
+      @filter-categorie="updateCategorie"
+    />
+    <select-base
+      name="difficulte"
+      label="Filtrer par difficulté :"
+      default="Toutes les difficultés"
+      :options="difficultes"
+      @filter-difficulte="updateDifficulte"
+    />
+  </div>
 
   <recette-card v-for="recette in recettes" :key="recette.id" :recette="recette" />
 </template>
 
-<style scoped></style>
+<style lang="scss">
+h1,
+.filtres {
+  grid-column: 1/-1;
+}
+
+.filtres {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+
+  &>div{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: .5em;
+    background: #edbad6;
+    padding: 1em;
+    border-radius: .5em;
+  }
+}
+</style>

@@ -1,8 +1,8 @@
 <template>
   <article class="card" :id="recette.id">
-    <div class="card-image">
+    <figure class="card-image">
       <img :src="recette.img.url" :alt="recette.img.alt" />
-    </div>
+    </figure>
     <div class="card-content">
       <h2 class="card-title">{{ recette.title }}</h2>
       <p class="card-text">{{ recette.description }}</p>
@@ -77,7 +77,7 @@ export default {
   border: 1px solid #ccc;
   border-radius: .5em;
   padding: 1em;
-  margin: 1em;
+  margin-block: 1em;
   min-width: 18em;
   box-shadow: 0 0 1em rgba(0, 0, 0, 0.1);
   &-image{

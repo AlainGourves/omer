@@ -1,7 +1,7 @@
 <template>
   <div>
     <label :for="name">{{label}}</label>
-    <select :id="name">
+    <select :id="name" v-model="selectedValue" @change="onChange()">
       <option value="all">{{default}}</option>
       <option v-for="option in options" :value="option.id">{{option.name}}</option>
     </select>
@@ -29,12 +29,12 @@ export default {
     },
     data() {
         return {
-            selected: ''
+            selectedValue: 'all'
         }
     },
     methods: {
-        updateValue(value) {
-            this.$emit('input', value)
+        onChange() {
+            this.$emit(`filter-${this.name}`, this.selectedValue);
         }
     }
 }
