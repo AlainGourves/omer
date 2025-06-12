@@ -1,7 +1,7 @@
 <template>
   <article class="card" :id="recette.id">
     <div class="card-image">
-      <img src="" alt="" />
+      <img :src="recette.img.url" :alt="recette.img.alt" />
     </div>
     <div class="card-content">
       <h2 class="card-title">{{ recette.title }}</h2>
@@ -16,9 +16,6 @@
         </p>
         <p>
           <strong>Catégorie :</strong> <span>{{ recette.categorie }}</span>
-        </p>
-        <p>
-          <strong>Image :</strong> <span>{{ recette.imgId }}</span>
         </p>
       </div>
     </div>
@@ -52,9 +49,20 @@ export default {
             required: true,
             type: String,
         },
-        imgId: {
+        img: {
+          id: {
             required: true,
             type: Number,
+          },
+          url: {
+            type: String,
+          },
+          alt: {
+            type: String,
+          },
+          width:{
+            type: Number,
+          }
         },
     }
   },
@@ -64,4 +72,39 @@ export default {
   },
 }
 </script>
-<style lang=""></style>
+<style lang="scss">
+.card{
+  border: 1px solid #ccc;
+  border-radius: .5em;
+  padding: 1em;
+  margin: 1em;
+  min-width: 18em;
+  box-shadow: 0 0 1em rgba(0, 0, 0, 0.1);
+  &-image{
+    img{
+      width: 100%;
+      aspect-ratio: 16/9;
+      object-fit: cover;
+      border-radius: .5em;
+      background: rebeccapurple;
+    }
+  }
+  &-title{
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-block: 1em;
+  }
+  &-text{
+    font-size: 1rem;
+    margin-bottom: 1em;
+  }
+  &-details{
+    p{
+      margin: 0;
+      padding: 0;
+      font-size: 0.8em;
+      color: #666;
+    }
+  }
+}
+</style>
