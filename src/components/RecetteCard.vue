@@ -1,7 +1,7 @@
 <template>
   <article class="card" :id="recette.id">
     <figure class="card-image">
-      <img :src="recette.img.url" :alt="recette.img.alt" />
+      <img :src="recette.img.url" :alt="recette.img.alt" :srcset="recette.img.srcset"/>
     </figure>
     <div class="card-content">
       <h2 class="card-title">{{ recette.title }}</h2>
@@ -55,6 +55,9 @@ export default {
             type: Number,
           },
           url: {
+            type: String,
+          },
+          srcset: {
             type: String,
           },
           alt: {
