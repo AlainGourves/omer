@@ -1,6 +1,6 @@
 <template>
   <div>
-    <label :for="name">{{label}}</label>
+    <label :for="name">{{label}}&nbsp;:</label>
     <select :id="name" v-model="selectedValue" @change="onChange()">
       <option value="all">{{default}}</option>
       <option v-for="option in options" :value="option.id">{{option.name}}</option>

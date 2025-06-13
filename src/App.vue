@@ -20,7 +20,6 @@ export default {
       recettes: [],
       selectedCategorie: null,
       selectedDifficulte: null,
-      totalRecettes: 0,
     }
   },
   methods: {
@@ -85,17 +84,17 @@ export default {
 
       try {
         // récupère les informations sur l'image (obj JSON)
-        const response = await fetch(`https://omer.zagzig.fr/wp-json/wp/v2/media/${imageId}`);
-        const data = await response.json();
-        let width = null;
-        let url = null;
-        const altText = data.alt_text || null;
-        const sizes = data.media_details.sizes || null;
+        const response = await fetch(`https://omer.zagzig.fr/wp-json/wp/v2/media/${imageId}`)
+        const data = await response.json()
+        let width = null
+        let url = null
+        const altText = data.alt_text || null
+        const sizes = data.media_details.sizes || null
         if (!sizes) {
-          throw new Error('Aucun format disponible pour cette image');
+          throw new Error('Aucun format disponible pour cette image')
         }
-        const formats = Object.getOwnPropertyNames(sizes);
-        const srcset = this.makeSrcSet(sizes);
+        const formats = Object.getOwnPropertyNames(sizes)
+        const srcset = this.makeSrcSet(sizes)
         formats.forEach((format) => {
           if (format === 'medium') {
             width = sizes[format].width || null
@@ -108,7 +107,7 @@ export default {
           altText: altText,
           width: width,
           url: url,
-          srcset: srcset
+          srcset: srcset,
         }
       } catch (error) {
         console.error('Erreur lors de la récupération de l’image', error)
@@ -116,32 +115,40 @@ export default {
     },
 
     makeSrcSet(obj) {
-      const infos = [];
-      let srcset = [];
-      const formats = Object.getOwnPropertyNames(obj);
+      const infos = []
+      let srcset = []
+      const formats = Object.getOwnPropertyNames(obj)
       formats.forEach((format) => {
         infos.push({
           format: format,
           width: obj[format].width,
           source_url: obj[format].source_url,
         })
-      });
+      })
       // Tri sur la largeur
-      infos.sort((a, b) => a.width - b.width);
+      infos.sort((a, b) => a.width - b.width)
       infos.forEach((info) => {
-        srcset.push(`${info.source_url} ${info.width}w`);
-      });
-      return srcset.join(',');
+        srcset.push(`${info.source_url} ${info.width}w`)
+      })
+      return srcset.join(',')
     },
 
     updateCategorie(value) {
-      const categorie = this.categories.find((categorie) => categorie.id === value);
-      this.selectedCategorie = categorie.name;
+      if (value === 'all') {
+        this.selectedCategorie = null
+      } else {
+        const categorie = this.categories.find((categorie) => categorie.id === value)
+        this.selectedCategorie = categorie.name
+      }
     },
 
     updateDifficulte(value) {
-      const difficulte = this.difficultes.find((difficulte) => difficulte.id === value);
-      this.selectedDifficulte = difficulte.name;
+      if (value === 'all') {
+        this.selectedDifficulte = null
+      } else {
+        const difficulte = this.difficultes.find((difficulte) => difficulte.id === value)
+        this.selectedDifficulte = difficulte.name
+      }
     },
   },
   async mounted() {
@@ -151,11 +158,10 @@ export default {
     this.fetchDifficultes()
     // Recettes
     await this.fetchRecettes()
-    this.totalRecettes = this.recettes.length
 
     this.recettes.forEach(async (recette) => {
       const imgId = recette.img.id
-      const imgInfos = await this.getImageInfos(imgId);
+      const imgInfos = await this.getImageInfos(imgId)
       if (!imgInfos) return
       recette.img.alt = imgInfos.altText
       recette.img.width = imgInfos.width
@@ -167,20 +173,15 @@ export default {
     filterRecettes() {
       let articles = this.recettes
       if (this.selectedCategorie) {
-        articles = articles.filter(
-          (recette) => recette.categorie === this.selectedCategorie,
-        )
+        articles = articles.filter((recette) => recette.categorie === this.selectedCategorie)
       }
       if (this.selectedDifficulte) {
-        articles = articles.filter(
-          (recette) => recette.difficulte === this.selectedDifficulte,
-        )
+        articles = articles.filter((recette) => recette.difficulte === this.selectedDifficulte)
       }
-      console.log(articles);
-      return articles;
+      return articles
     },
     totalRecettes() {
-      return this.filterRecettes.length;
+      return this.filterRecettes.length
     },
   },
 }
@@ -188,25 +189,32 @@ export default {
 
 <template>
   <h1>Recettes</h1>
-  <p class="total" v-if="totalRecettes > 0">{{ totalRecettes}} recette{{ totalRecettes > 1 ? 's' : '' }}</p>
+  <p class="total" v-if="totalRecettes > 0">
+    {{ totalRecettes }} recette{{ totalRecettes > 1 ? 's' : '' }}
+  </p>
   <div class="filtres">
     <select-base
-    name="categorie"
-    label="Filtrer par catégorie :"
-    default="Toutes les catégories"
-    :options="categories"
-    @filter-categorie="updateCategorie"
+      name="categorie"
+      label="Filtrer par catégorie"
+      default="Toutes les catégories"
+      :options="categories"
+      @filter-categorie="updateCategorie"
     />
     <select-base
-    name="difficulte"
-    label="Filtrer par difficulté :"
-    default="Toutes les difficultés"
-    :options="difficultes"
-    @filter-difficulte="updateDifficulte"
+      name="difficulte"
+      label="Filtrer par difficulté"
+      default="Toutes les difficultés"
+      :options="difficultes"
+      @filter-difficulte="updateDifficulte"
     />
   </div>
 
-  <recette-card  v-if="totalRecettes > 0" v-for="recette in filterRecettes" :key="recette.id" :recette="recette" />
+  <recette-card
+    v-if="totalRecettes > 0"
+    v-for="recette in filterRecettes"
+    :key="recette.id"
+    :recette="recette"
+  />
   <p v-else>Aucune recette ne correspond à vos critères.</p>
 </template>
 
@@ -233,8 +241,8 @@ p.total,
   }
 }
 
-.total{
-    font-style: italic;
-    background: deeppink;
+.total {
+  font-style: italic;
+  background: deeppink;
 }
 </style>
