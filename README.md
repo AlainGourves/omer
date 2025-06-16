@@ -13,17 +13,29 @@ See [Vite Configuration Reference](https://vite.dev/config/).
 ## Project Setup
 
 ```sh
+npm install
+```
+or
+```sh
 bun install
 ```
 
 ### Compile and Hot-Reload for Development
 
 ```sh
-bun dev
+npm run dev
+```
+or
+```sh
+bun run dev
 ```
 
 ### Compile and Minify for Production
 
+```sh
+npm run build
+```
+or
 ```sh
 bun run build
 ```
