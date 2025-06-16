@@ -18,6 +18,10 @@ export default {
             type: String,
             required: true
         },
+        func: {
+            type: String,
+            required: true
+        },
         default: {
             type: String,
             required: true
@@ -34,7 +38,7 @@ export default {
     },
     methods: {
         onChange() {
-            this.$emit(`filter-${this.name}`, this.selectedValue);
+            this.$emit(`${this.func}-${this.name}`, this.selectedValue);
         }
     }
 }

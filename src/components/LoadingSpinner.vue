@@ -48,7 +48,7 @@ export default {
 
   display: grid;
   place-content: center;
-  position: absolute;
+  position: fixed;
   inset: 0;
   transform-origin: center;
   z-index: 9999;
