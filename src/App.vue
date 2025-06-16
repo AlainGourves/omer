@@ -1,6 +1,8 @@
 <script>
-import SelectBase from './components/SelectBase.vue'
-import RecetteCard from './components/RecetteCard.vue'
+import SelectBase from './components/SelectBase.vue';
+import RecetteCard from './components/RecetteCard.vue';
+import cardImage from './components/cardImage.vue';
+import CardImage from './components/cardImage.vue';
 
 const baseURL = 'https://omer.zagzig.fr/'
 const recettesURL = '/recettes.json'
@@ -12,6 +14,7 @@ export default {
   components: {
     SelectBase,
     RecetteCard,
+    CardImage,
   },
   data() {
     return {
