@@ -85,9 +85,7 @@ export default {
             categorie: categorie.name,
             difficulte: difficulte.name,
             temps: obj.acf.temps,
-            img: {
-              id: obj.acf.image,
-            },
+            imgId: obj.acf.image,
           }
         })
         this.recettes = this.recettes.concat([...newArticles])
@@ -98,6 +96,7 @@ export default {
       }
     },
 
+    /*
     async getImageInfos(imageId) {
       if (!imageId) return
 
@@ -133,6 +132,7 @@ export default {
       }
     },
 
+
     makeSrcSet(obj) {
       const infos = []
       let srcset = []
@@ -151,6 +151,7 @@ export default {
       })
       return srcset.join(',')
     },
+    */
 
     updateSortDirection(value) {
       if (value === 'all') {
@@ -198,15 +199,15 @@ export default {
     await this.fetchArticles();
     this.scrollHandler();
 
-    this.recettes.forEach(async (recette) => {
-      const imgId = recette.img.id
-      const imgInfos = await this.getImageInfos(imgId)
-      if (!imgInfos) return
-      recette.img.alt = imgInfos.altText
-      recette.img.width = imgInfos.width
-      recette.img.url = imgInfos.url
-      recette.img.srcset = imgInfos.srcset
-    })
+    // this.recettes.forEach(async (recette) => {
+    //   const imgId = recette.img.id
+    //   const imgInfos = await this.getImageInfos(imgId)
+    //   if (!imgInfos) return
+    //   recette.img.alt = imgInfos.altText
+    //   recette.img.width = imgInfos.width
+    //   recette.img.url = imgInfos.url
+    //   recette.img.srcset = imgInfos.srcset
+    // })
   },
   computed: {
     filterRecettes() {
