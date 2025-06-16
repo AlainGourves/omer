@@ -2,6 +2,8 @@
   <figure class="card-image">
     <img :src="url" :alt="alt" :srcset="srcset" />
   </figure>
+  <p>Blalalala</p>
+  <div>{{ id }}</div>
 </template>
 
 <script>
@@ -9,11 +11,15 @@ export default {
   props: {
     id: {
       required: true,
-      //   type: String|Number,
+      type: Number,
     },
   },
   data() {
     return {
+      url: null,
+      alt: null,
+      srcset: null,
+      width: null,
       isLoading: true,
       error: null,
     }
@@ -27,32 +33,32 @@ export default {
         if (!sizes) {
           throw new Error('Aucun format disponible pour cette image')
         }
-        const formats = Object.getOwnPropertyNames(sizes);
-        const infos = [];
-    const srcset = [];
-        let defaultWidth;
-        let defaultURL;
+        const formats = Object.getOwnPropertyNames(sizes)
+        const infos = []
+        const srcset = []
+        let defaultWidth
+        let defaultURL
         formats.forEach((format) => {
-          infos.push({
-            format: format,
-            width: sizes[format].width,
-            source_url: sizes[format].source_url,
-          })
+          // infos.push({
+          //   format: format,
+          //   width: sizes[format].width,
+          //   source_url: sizes[format].source_url,
+          // })
           if (format === 'medium') {
-            defaultWidth = sizes[format].width;
-            defaultURL = sizes[format].source_url;
+            defaultWidth = sizes[format].width
+            defaultURL = sizes[format].source_url
           }
         })
-        infos.sort((a, b) => a.width - b.width);
-        infos.forEach((info) => {
-            srcset.push(`${info.source_url} ${info.width}w`);
-      });
+        // infos.sort((a, b) => a.width - b.width)
+        // infos.forEach((info) => {
+        //   srcset.push(`${info.source_url} ${info.width}w`)
+        // })
 
         return {
-            url: defaultURL,
-            alt: data.alt_text,
-            srcset: srcset,
-            width: defaultWidth,
+          url: defaultURL,
+          alt: data.alt_text,
+          srcset: srcset,
+          width: defaultWidth,
         }
       } catch (error) {
         console.error('Erreur lors de la récupération de l’image', error)
@@ -60,8 +66,9 @@ export default {
     },
   },
   async created() {
-    const infos =await this.fetchImgInfos();
-    console.log(infos);
+    const infos = await this.fetchImgInfos();
+    this.url = infos.url;
+    this.alt = infos.alt;
   },
 }
 </script>

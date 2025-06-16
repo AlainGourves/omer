@@ -1,8 +1,7 @@
 <script>
 import SelectBase from './components/SelectBase.vue';
 import RecetteCard from './components/RecetteCard.vue';
-import cardImage from './components/cardImage.vue';
-import CardImage from './components/cardImage.vue';
+import CardImage from './components/CardImage.vue';
 
 const baseURL = 'https://omer.zagzig.fr/'
 const recettesURL = '/recettes.json'
@@ -72,9 +71,7 @@ export default {
             categorie: categorie.name,
             difficulte: difficulte.name,
             temps: obj.acf.temps,
-            img: {
-              id: obj.acf.image,
-            },
+            imgId: obj.acf.image,
           }
         })
       } catch (error) {
@@ -82,6 +79,7 @@ export default {
       }
     },
 
+    /*
     async getImageInfos(imageId) {
       if (!imageId) return
 
@@ -117,6 +115,7 @@ export default {
       }
     },
 
+
     makeSrcSet(obj) {
       const infos = []
       let srcset = []
@@ -135,7 +134,7 @@ export default {
       })
       return srcset.join(',')
     },
-
+*/
     updateCategorie(value) {
       if (value === 'all') {
         this.selectedCategorie = null
@@ -162,15 +161,15 @@ export default {
     // Recettes
     await this.fetchRecettes()
 
-    this.recettes.forEach(async (recette) => {
-      const imgId = recette.img.id
-      const imgInfos = await this.getImageInfos(imgId)
-      if (!imgInfos) return
-      recette.img.alt = imgInfos.altText
-      recette.img.width = imgInfos.width
-      recette.img.url = imgInfos.url
-      recette.img.srcset = imgInfos.srcset
-    })
+    // this.recettes.forEach(async (recette) => {
+    //   const imgId = recette.img.id
+    //   const imgInfos = await this.getImageInfos(imgId)
+    //   if (!imgInfos) return
+    //   recette.img.alt = imgInfos.altText
+    //   recette.img.width = imgInfos.width
+    //   recette.img.url = imgInfos.url
+    //   recette.img.srcset = imgInfos.srcset
+    // })
   },
   computed: {
     filterRecettes() {
