@@ -8,6 +8,8 @@
   display: grid;
   grid-template-columns: 1fr;
   gap: 1rem;
+  position: relative;
+  min-height: 100dvh;
 }
 
 a,

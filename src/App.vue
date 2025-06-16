@@ -1,31 +1,38 @@
 <script>
 import SelectBase from './components/SelectBase.vue'
 import RecetteCard from './components/RecetteCard.vue'
+import LoadingSpinner from './components/LoadingSpinner.vue'
 
-const baseURL = 'https://omer.zagzig.fr/'
-const recettesURL = '/recettes.json'
-const categoriesURL = '/categories.json'
-const difficultesURL = '/difficultes.json'
+const baseURL = 'https://omer.zagzig.fr/wp-json/wp/v2'
+const recettesURL = '/recette'
+const categoriesURL = '/categorie'
+const difficultesURL = '/difficulte'
 
 export default {
   name: 'App',
   components: {
     SelectBase,
     RecetteCard,
+    LoadingSpinner,
   },
   data() {
     return {
+      loading: true,
       categories: [],
       difficultes: [],
       recettes: [],
       selectedCategorie: null,
       selectedDifficulte: null,
+      articlesTotal: 0,
+      articlesPerPage: 4,
+      articlesOffset: 0,
+      totalPages: 0,
     }
   },
   methods: {
     async fetchCategories() {
       try {
-        const response = await fetch(categoriesURL)
+        const response = await fetch(`${baseURL}${categoriesURL}`)
         const data = await response.json()
         this.categories = data.map((obj) => {
           return {
@@ -40,7 +47,7 @@ export default {
 
     async fetchDifficultes() {
       try {
-        const response = await fetch(difficultesURL)
+        const response = await fetch(`${baseURL}${difficultesURL}`)
         const data = await response.json()
         this.difficultes = data.map((obj) => {
           return {
@@ -53,15 +60,19 @@ export default {
       }
     },
 
-    async fetchRecettes() {
+    async fetchArticles() {
       try {
-        const response = await fetch(recettesURL)
+        const response = await fetch(
+          `${baseURL}${recettesURL}?&per_page=${this.articlesPerPage}&offset=${this.articlesOffset}`,
+        )
+        this.articlesTotal = response.headers.get('X-WP-Total')
         const data = await response.json()
         this.recettes = data.map((obj) => {
           const categorie = this.categories.find((categorie) => categorie.id === obj.acf.categorie)
           const difficulte = this.difficultes.find(
             (difficulte) => difficulte.id === obj.acf.difficulte[0],
           )
+          this.loading = false;
           return {
             id: obj.id,
             title: obj.acf.nom,
@@ -75,7 +86,8 @@ export default {
           }
         })
       } catch (error) {
-        console.error('Erreur lors de la récupération des recettes', error)
+        this.loading = false;
+        console.error('Erreur lors de la récupération des articles', error)
       }
     },
 
@@ -153,11 +165,11 @@ export default {
   },
   async mounted() {
     // Catégories
-    this.fetchCategories()
+    await this.fetchCategories()
     // Difficultés
-    this.fetchDifficultes()
+    await this.fetchDifficultes()
     // Recettes
-    await this.fetchRecettes()
+    await this.fetchArticles()
 
     this.recettes.forEach(async (recette) => {
       const imgId = recette.img.id
@@ -180,7 +192,7 @@ export default {
       }
       return articles
     },
-    totalRecettes() {
+    nbrArticles() {
       return this.filterRecettes.length
     },
   },
@@ -189,33 +201,38 @@ export default {
 
 <template>
   <h1>Recettes</h1>
-  <p class="total" v-if="totalRecettes > 0">
-    {{ totalRecettes }} recette{{ totalRecettes > 1 ? 's' : '' }}
-  </p>
-  <div class="filtres">
-    <select-base
+  <template v-if="loading">
+    <loading-spinner label="Chargement des recettes..."/>
+  </template>
+  <template v-else>
+    <p class="total" v-if="nbrArticles > 0">
+      {{ nbrArticles }} recette{{ nbrArticles > 1 ? 's' : '' }}
+    </p>
+    <div class="filtres">
+      <select-base
       name="categorie"
       label="Filtrer par catégorie"
       default="Toutes les catégories"
       :options="categories"
       @filter-categorie="updateCategorie"
-    />
-    <select-base
+      />
+      <select-base
       name="difficulte"
       label="Filtrer par difficulté"
       default="Toutes les difficultés"
       :options="difficultes"
       @filter-difficulte="updateDifficulte"
-    />
-  </div>
+      />
+    </div>
 
-  <recette-card
-    v-if="totalRecettes > 0"
+    <recette-card
+    v-if="nbrArticles > 0"
     v-for="recette in filterRecettes"
     :key="recette.id"
     :recette="recette"
-  />
-  <p v-else>Aucune recette ne correspond à vos critères.</p>
+    />
+    <p v-else>Aucune recette ne correspond à vos critères.</p>
+  </template>
 </template>
 
 <style lang="scss">
