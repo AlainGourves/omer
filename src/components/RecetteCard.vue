@@ -92,11 +92,18 @@ export default {
     margin-bottom: 1em;
   }
   &-details {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 0.5em;
+
     p {
       margin: 0;
-      padding: 0;
+      padding: .25em;
       font-size: 0.8em;
-      color: #666;
+      color: #444;
+      text-align: center;
+      background: #f2f2f2;
+      border-radius: .5em;
     }
   }
 }
