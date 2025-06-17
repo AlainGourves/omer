@@ -68,9 +68,12 @@ export default {
 
     async fetchArticles() {
       try {
-        const response = await fetch(
-          `${baseURL}${recettesURL}?&per_page=${this.articlesPerPage}&offset=${this.articleIndex}`,
-        )
+        const categoryFilter = this.selectedCategorie ? `&categorie=${this.selectedCategorie}` : ''
+        const difficulteFilter = this.selectedDifficulte
+          ? `&difficulte=${this.selectedDifficulte}`
+          : ''
+        const query = `${baseURL}${recettesURL}?${categoryFilter}${difficulteFilter}&per_page=${this.articlesPerPage}&offset=${this.articleIndex}`
+        const response = await fetch(query)
         this.articlesTotal = response.headers.get('X-WP-Total')
         const data = await response.json()
         this.articleIndex += data.length
@@ -108,24 +111,20 @@ export default {
     },
 
     updateCategorie(value) {
-      if (value === 'all') {
-        this.selectedCategorie = null
-      } else {
-        const categorie = this.categories.find((categorie) => categorie.id === value)
-        this.selectedCategorie = categorie.name
-      }
+      this.selectedCategorie = value === 'all' ? null : value
+      this.recettes = []
+      this.articleIndex = 0
+      this.loadArticles()
     },
 
     updateDifficulte(value) {
-      if (value === 'all') {
-        this.selectedDifficulte = null
-      } else {
-        const difficulte = this.difficultes.find((difficulte) => difficulte.id === value)
-        this.selectedDifficulte = difficulte.name
-      }
+      this.selectedDifficulte = value === 'all' ? null : value
+      this.recettes = []
+      this.articleIndex = 0
+      this.loadArticles()
     },
 
-    async loadMoreArticles() {
+    async loadArticles() {
       this.loading = true
       await this.fetchArticles()
       this.scrollHandler()
@@ -142,11 +141,10 @@ export default {
     // Difficultés
     await this.fetchDifficultes()
     // Recettes
-    await this.fetchArticles()
-    this.scrollHandler()
+    await this.loadArticles()
   },
   computed: {
-    filterRecettes() {
+    sortArticles() {
       let articles = [...this.recettes]
       if (this.sortDir) {
         if (this.sortDir === 'asc') {
@@ -155,16 +153,10 @@ export default {
           articles.sort((a, b) => (b.temps || 0) - (a.temps || 0))
         }
       }
-      if (this.selectedCategorie) {
-        articles = articles.filter((recette) => recette.categorie === this.selectedCategorie)
-      }
-      if (this.selectedDifficulte) {
-        articles = articles.filter((recette) => recette.difficulte === this.selectedDifficulte)
-      }
       return articles
     },
     nbrArticles() {
-      return this.filterRecettes.length
+      return this.sortArticles.length
     },
   },
 }
@@ -182,7 +174,7 @@ export default {
     <select-base
       name="temps"
       label="Trier par temps"
-      func="sort"
+      fn="sort"
       default="Par défaut"
       :options="tri"
       @sort-temps="updateSortDirection"
@@ -190,7 +182,7 @@ export default {
     <select-base
       name="categorie"
       label="Filtrer par catégorie"
-      func="filter"
+      fn="filter"
       default="Toutes les catégories"
       :options="categories"
       @filter-categorie="updateCategorie"
@@ -198,7 +190,7 @@ export default {
     <select-base
       name="difficulte"
       label="Filtrer par difficulté"
-      func="filter"
+      fn="filter"
       default="Toutes les difficultés"
       :options="difficultes"
       @filter-difficulte="updateDifficulte"
@@ -207,7 +199,7 @@ export default {
 
   <recette-card
     v-if="nbrArticles > 0"
-    v-for="recette in filterRecettes"
+    v-for="recette in sortArticles"
     :key="recette.id"
     :ref="recette.id === this.articleToScrollTo ? 'scrollTarget' : null"
     :recette="recette"
@@ -217,7 +209,7 @@ export default {
   </template>
 
   <div v-if="!loading && articleIndex < articlesTotal" class="load-more_wrap">
-    <button @click="loadMoreArticles">Charger plus</button>
+    <button @click="loadArticles">Charger plus</button>
   </div>
 </template>
 

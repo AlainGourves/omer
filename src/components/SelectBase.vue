@@ -18,7 +18,7 @@ export default {
             type: String,
             required: true
         },
-        func: {
+        fn: {
             type: String,
             required: true
         },
@@ -38,7 +38,7 @@ export default {
     },
     methods: {
         onChange() {
-            this.$emit(`${this.func}-${this.name}`, this.selectedValue);
+            this.$emit(`${this.fn}-${this.name}`, this.selectedValue);
         }
     }
 }
