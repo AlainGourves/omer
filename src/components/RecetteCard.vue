@@ -74,12 +74,12 @@ export default {
   min-width: 18em;
   box-shadow: 0 0 1em rgba(0, 0, 0, 0.1);
   &-image {
-    img {
+    img,
+    svg {
       width: 100%;
       aspect-ratio: 16/9;
       object-fit: cover;
       border-radius: 0.5em;
-      background: rebeccapurple;
     }
   }
   &-title {

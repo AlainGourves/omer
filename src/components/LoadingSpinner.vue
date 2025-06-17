@@ -58,6 +58,9 @@ export default {
     display: grid;
     place-content: center;
     gap: 1rem;
+    padding: 1.5em;
+    background: #aaa;
+    border-radius: 1em;
   }
 
   &-anim {

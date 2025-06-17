@@ -20,7 +20,10 @@ export default {
       loading: true,
       categories: [],
       difficultes: [],
-      tri:[{id:'asc', name:'Temps croissant'},{id:'desc', name:'Temps décroissant'}],
+      tri: [
+        { id: 'asc', name: 'Temps croissant' },
+        { id: 'desc', name: 'Temps décroissant' },
+      ],
       recettes: [],
       sortDir: null,
       selectedCategorie: null,
@@ -96,63 +99,6 @@ export default {
       }
     },
 
-    /*
-    async getImageInfos(imageId) {
-      if (!imageId) return
-
-      try {
-        // récupère les informations sur l'image (obj JSON)
-        const response = await fetch(`https://omer.zagzig.fr/wp-json/wp/v2/media/${imageId}`)
-        const data = await response.json()
-        let width = null
-        let url = null
-        const altText = data.alt_text || null
-        const sizes = data.media_details.sizes || null
-        if (!sizes) {
-          throw new Error('Aucun format disponible pour cette image')
-        }
-        const formats = Object.getOwnPropertyNames(sizes)
-        const srcset = this.makeSrcSet(sizes)
-        formats.forEach((format) => {
-          if (format === 'medium') {
-            width = sizes[format].width || null
-            url = sizes[format].source_url || null
-          }
-        })
-
-        // return data.media_details
-        return {
-          altText: altText,
-          width: width,
-          url: url,
-          srcset: srcset,
-        }
-      } catch (error) {
-        console.error('Erreur lors de la récupération de l’image', error)
-      }
-    },
-
-
-    makeSrcSet(obj) {
-      const infos = []
-      let srcset = []
-      const formats = Object.getOwnPropertyNames(obj)
-      formats.forEach((format) => {
-        infos.push({
-          format: format,
-          width: obj[format].width,
-          source_url: obj[format].source_url,
-        })
-      })
-      // Tri sur la largeur
-      infos.sort((a, b) => a.width - b.width)
-      infos.forEach((info) => {
-        srcset.push(`${info.source_url} ${info.width}w`)
-      })
-      return srcset.join(',')
-    },
-    */
-
     updateSortDirection(value) {
       if (value === 'all') {
         this.sortDir = null
@@ -192,31 +138,21 @@ export default {
   },
   async mounted() {
     // Catégories
-    await this.fetchCategories();
+    await this.fetchCategories()
     // Difficultés
-    await this.fetchDifficultes();
+    await this.fetchDifficultes()
     // Recettes
-    await this.fetchArticles();
-    this.scrollHandler();
-
-    // this.recettes.forEach(async (recette) => {
-    //   const imgId = recette.img.id
-    //   const imgInfos = await this.getImageInfos(imgId)
-    //   if (!imgInfos) return
-    //   recette.img.alt = imgInfos.altText
-    //   recette.img.width = imgInfos.width
-    //   recette.img.url = imgInfos.url
-    //   recette.img.srcset = imgInfos.srcset
-    // })
+    await this.fetchArticles()
+    this.scrollHandler()
   },
   computed: {
     filterRecettes() {
-      let articles = [...this.recettes];
+      let articles = [...this.recettes]
       if (this.sortDir) {
-        if (this.sortDir === "asc") {
-          articles.sort((a, b) => (a.temps || 0) - (b.temps || 0));
-        } else if (this.sortDir === "desc") {
-          articles.sort((a, b) => (b.temps || 0) - (a.temps || 0));
+        if (this.sortDir === 'asc') {
+          articles.sort((a, b) => (a.temps || 0) - (b.temps || 0))
+        } else if (this.sortDir === 'desc') {
+          articles.sort((a, b) => (b.temps || 0) - (a.temps || 0))
         }
       }
       if (this.selectedCategorie) {
@@ -250,7 +186,7 @@ export default {
       default="Par défaut"
       :options="tri"
       @sort-temps="updateSortDirection"
-      />
+    />
     <select-base
       name="categorie"
       label="Filtrer par catégorie"
@@ -258,8 +194,8 @@ export default {
       default="Toutes les catégories"
       :options="categories"
       @filter-categorie="updateCategorie"
-      />
-      <select-base
+    />
+    <select-base
       name="difficulte"
       label="Filtrer par difficulté"
       func="filter"

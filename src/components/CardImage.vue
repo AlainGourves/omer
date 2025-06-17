@@ -1,9 +1,17 @@
 <template>
   <figure class="card-image">
-    <img :src="url" :alt="alt" :srcset="srcset" />
+    <svg v-if="loading" viewBox="0 0 100 80.64" xmlns="http://www.w3.org/2000/svg">
+      <g fill="#555">
+        <path
+          d="m90.22 26.22-6.81-25.4-82.41 22.08 12.68 47.33v9.62h85.32v-53.63zm-76.54 20.64-5.43-20.28 70.63-18.93 4.98 18.57h-70.18zm79.18-10.78v38.31h-73.13v-42.74h73.13v4.44z"
+        />
+        <path d="m23.9 71.3h64.62l-33.5-24.05-4.69 6.85-12.4-10.84-14.03 19.59z" />
+        <circle cx="72.81" cy="44.04" r="6.5" />
+      </g>
+    </svg>
+    
+    <img v-else :src="url" :alt="alt" :srcset="srcset" />
   </figure>
-  <p>Blalalala</p>
-  <div>{{ id }}</div>
 </template>
 
 <script>
@@ -20,7 +28,7 @@ export default {
       alt: null,
       srcset: null,
       width: null,
-      isLoading: true,
+      loading: true,
       error: null,
     }
   },
@@ -54,6 +62,7 @@ export default {
         //   srcset.push(`${info.source_url} ${info.width}w`)
         // })
 
+        this.loading = false
         return {
           url: defaultURL,
           alt: data.alt_text,
@@ -61,14 +70,15 @@ export default {
           width: defaultWidth,
         }
       } catch (error) {
+        this.loading = false
         console.error('Erreur lors de la récupération de l’image', error)
       }
     },
   },
   async created() {
-    const infos = await this.fetchImgInfos();
-    this.url = infos.url;
-    this.alt = infos.alt;
+    const infos = await this.fetchImgInfos()
+    this.url = infos.url
+    this.alt = infos.alt
   },
 }
 </script>
