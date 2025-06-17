@@ -97,13 +97,16 @@ export default {
     gap: 0.5em;
 
     p {
-      margin: 0;
-      padding: .25em;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 0 0.5em;
+      padding: 0.25em;
       font-size: 0.8em;
       color: #444;
-      text-align: center;
       background: #f2f2f2;
-      border-radius: .5em;
+      border-radius: 0.5em;
     }
   }
 }

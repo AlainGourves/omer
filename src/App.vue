@@ -167,9 +167,6 @@ export default {
   <template v-if="loading">
     <loading-spinner label="Chargement des recettes..." />
   </template>
-  <p class="total" v-if="nbrArticles > 0">
-    {{ nbrArticles }} recette{{ nbrArticles > 1 ? 's' : '' }} / {{ articlesTotal }}
-  </p>
   <div class="filtres">
     <select-base
       name="temps"
@@ -177,6 +174,7 @@ export default {
       fn="sort"
       default="Par défaut"
       :options="tri"
+      :loading="loading"
       @sort-temps="updateSortDirection"
     />
     <select-base
@@ -185,6 +183,7 @@ export default {
       fn="filter"
       default="Toutes les catégories"
       :options="categories"
+      :loading="loading"
       @filter-categorie="updateCategorie"
     />
     <select-base
@@ -193,6 +192,7 @@ export default {
       fn="filter"
       default="Toutes les difficultés"
       :options="difficultes"
+      :loading="loading"
       @filter-difficulte="updateDifficulte"
     />
   </div>
@@ -209,7 +209,7 @@ export default {
   </template>
 
   <div v-if="!loading && articleIndex < articlesTotal" class="load-more_wrap">
-    <button @click="loadArticles">Charger plus</button>
+    <button @click="loadArticles">Charger plus ({{ (articlesTotal - nbrArticles) }} supplémentaire{{ (articlesTotal - nbrArticles) > 1 ? 's' : '' }})</button>
   </div>
 </template>
 
@@ -225,23 +225,29 @@ p.total,
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   gap: 1rem;
+  container-type: inline-size;
 
   & > div {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 0.5em;
+    gap: 0.25em;
     background: #edbad6;
-    padding: 1em;
+    padding: .5em;
     border-radius: 0.5em;
+  }
+
+  @container (max-width: 1180px) {
+    div{
+      flex-direction: column;
+    }
   }
 }
 
-.total {
-  padding-inline: 0.5em;
-  border-radius: 0.5em;
-  font-style: italic;
-  background: #f2f2f2;
+@media screen and (max-width: 730px) {
+  .filtres {
+    grid-template-columns: 1fr;
+  }
 }
 
 .load-more_wrap {
