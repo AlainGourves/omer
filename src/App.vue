@@ -196,17 +196,18 @@ export default {
       @filter-difficulte="updateDifficulte"
     />
   </div>
-
-  <recette-card
+  <div class="content">
+    <recette-card
     v-if="nbrArticles > 0"
     v-for="recette in sortArticles"
     :key="recette.id"
     :ref="recette.id === this.articleToScrollTo ? 'scrollTarget' : null"
     :recette="recette"
-  />
-  <template v-else>
-    <p v-if="!loading">Aucune recette ne correspond à vos critères.</p>
-  </template>
+    />
+    <template v-else>
+      <p v-if="!loading">Aucune recette ne correspond à vos critères.</p>
+    </template>
+  </div>
 
   <div v-if="!loading && articleIndex < articlesTotal" class="load-more_wrap">
     <button @click="loadArticles">Charger plus ({{ (articlesTotal - nbrArticles) }} supplémentaire{{ (articlesTotal - nbrArticles) > 1 ? 's' : '' }})</button>
@@ -214,11 +215,18 @@ export default {
 </template>
 
 <style lang="scss">
-h1,
-p.total,
-.filtres,
-.load-more_wrap {
-  grid-column: 1/-1;
+.content{
+display: grid;
+  grid-template-columns: 1fr;
+  align-items: start;
+  gap: 1rem;
+}
+
+@media (min-width: 1024px) {
+  .content {
+    grid-template-columns: 1fr 1fr;
+    padding: 0 2rem;
+  }
 }
 
 .filtres {
@@ -253,7 +261,7 @@ p.total,
 .load-more_wrap {
   display: flex;
   justify-content: center;
-  margin-block-end: 2em;
+  margin-block-end: 3em;
 
   & button {
     background-color: transparent;
