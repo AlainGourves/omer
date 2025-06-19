@@ -67,12 +67,24 @@ export default {
 
 <style lang="scss">
 .card {
-  border: 1px solid #ccc;
+  border: 1px solid #f0f0f0;
   border-radius: 0.5em;
   padding: 1em;
   margin-block: 1em;
   min-width: 18em;
-  box-shadow: 0 0 1em rgba(0, 0, 0, 0.1);
+  box-shadow: 0 .4em 1em rgb(0 0 0 / .1);
+  transition: all .4s ease-in-out;
+
+  &:hover {
+    transform: scale(1.05);
+
+    & .card-text{
+      min-height: none;
+      line-clamp: unset;
+      -webkit-line-clamp: unset;
+      overflow: none;
+    }
+  }
   &-image {
     img,
     svg {
@@ -88,8 +100,15 @@ export default {
     margin-block: 1em;
   }
   &-text {
+    min-height: 2lh;
     font-size: 1rem;
     margin-bottom: 1em;
+    display: -webkit-box;
+    line-clamp: 2;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+
   }
   &-details {
     display: grid;

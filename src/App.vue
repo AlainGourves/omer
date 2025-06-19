@@ -8,6 +8,12 @@ const recettesURL = '/recette'
 const categoriesURL = '/categorie'
 const difficultesURL = '/difficulte'
 
+let WPData = null;
+const WPDataContainer = document.getElementById('wp-script-module-data-demi-sel-plugin-script');
+if (WPDataContainer) {
+  WPData = JSON.parse(WPDataContainer?.textContent);
+}
+
 export default {
   name: 'App',
   components: {
@@ -33,6 +39,7 @@ export default {
       articleIndex: 0,
       articleToScrollTo: null,
       totalPages: 0,
+      message: WPData?.message
     }
   },
   methods: {
@@ -164,6 +171,7 @@ export default {
 
 <template>
   <h1>Recettes</h1>
+  <h1 v-if="message">{{ message }}</h1>
   <template v-if="loading">
     <loading-spinner label="Chargement des recettes..." />
   </template>
