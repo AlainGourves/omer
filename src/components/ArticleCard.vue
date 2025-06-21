@@ -1,9 +1,9 @@
 <script>
-import CardImage from './CardImage.vue'
+import ArticleImage from './ArticleImage.vue'
 
 export default {
   components: {
-    CardImage,
+    ArticleImage,
   },
   props: {
     recette: {
@@ -45,7 +45,7 @@ export default {
 
 <template>
   <article class="card" :id="recette.id">
-    <card-image :id="recette.imgId"></card-image>
+    <article-image :id="recette.imgId"></article-image>
     <div class="card-content">
       <h2 class="card-title">{{ recette.title }}</h2>
       <p class="card-text">{{ recette.description }}</p>

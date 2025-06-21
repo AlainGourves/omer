@@ -1,6 +1,6 @@
 <script>
 import SelectBase from './components/SelectBase.vue'
-import RecetteCard from './components/RecetteCard.vue'
+import ArticleCard from './components/ArticleCard.vue'
 import LoadingSpinner from './components/LoadingSpinner.vue'
 
 const baseURL = 'https://omer.zagzig.fr/wp-json/wp/v2'
@@ -14,11 +14,19 @@ if (WPDataContainer) {
   WPData = JSON.parse(WPDataContainer?.textContent);
 }
 
+console.log('WPData', WPData);
+const WPMessage = WPData?.message || '[Vue]Titre la grille';
+const WPPagination = Number.parseInt(WPData?.pagination) || 4;
+const WPPostType ='';
+const WPTaxonomies = [];
+const WPFilters = [];
+const WPSort = [];
+
 export default {
   name: 'App',
   components: {
     SelectBase,
-    RecetteCard,
+    ArticleCard,
     LoadingSpinner,
   },
   data() {
@@ -30,16 +38,16 @@ export default {
         { id: 'asc', name: 'Temps croissant' },
         { id: 'desc', name: 'Temps décroissant' },
       ],
-      recettes: [],
+      articles: [],
       sortDir: null,
       selectedCategorie: null,
       selectedDifficulte: null,
       articlesTotal: 0,
-      articlesPerPage: 4,
+      articlesPerPage: WPPagination,
       articleIndex: 0,
       articleToScrollTo: null,
       totalPages: 0,
-      message: WPData?.message
+      message: WPMessage,
     }
   },
   methods: {
@@ -93,15 +101,15 @@ export default {
           if (idx === 0) this.articleToScrollTo = obj.id
           return {
             id: obj.id,
-            title: obj.acf.Nom,
+            title: obj.acf.titre,
             description: obj.acf.description,
+            imgId: obj.acf.image,
             categorie: categorie.name,
             difficulte: difficulte.name,
             temps: obj.acf.temps,
-            imgId: obj.acf.image,
           }
         })
-        this.recettes = this.recettes.concat([...newArticles])
+        this.articles = this.articles.concat([...newArticles])
         this.loading = false
       } catch (error) {
         this.loading = false
@@ -119,14 +127,14 @@ export default {
 
     updateCategorie(value) {
       this.selectedCategorie = value === 'all' ? null : value
-      this.recettes = []
+      this.articles = []
       this.articleIndex = 0
       this.loadArticles()
     },
 
     updateDifficulte(value) {
       this.selectedDifficulte = value === 'all' ? null : value
-      this.recettes = []
+      this.articles = []
       this.articleIndex = 0
       this.loadArticles()
     },
@@ -147,12 +155,12 @@ export default {
     await this.fetchCategories()
     // Difficultés
     await this.fetchDifficultes()
-    // Recettes
+    // Articles
     await this.loadArticles()
   },
   computed: {
     sortArticles() {
-      let articles = [...this.recettes]
+      let articles = [...this.articles]
       if (this.sortDir) {
         if (this.sortDir === 'asc') {
           articles.sort((a, b) => (a.temps || 0) - (b.temps || 0))
@@ -170,10 +178,10 @@ export default {
 </script>
 
 <template>
-  <h1>Recettes</h1>
   <h1 v-if="message">{{ message }}</h1>
+  <h1 v-else>Ici un titre ?</h1>
   <template v-if="loading">
-    <loading-spinner label="Chargement des recettes..." />
+    <loading-spinner label="Chargement des données..." />
   </template>
   <div class="filtres">
     <select-base
@@ -205,7 +213,7 @@ export default {
     />
   </div>
   <div class="content">
-    <recette-card
+    <article-card
     v-if="nbrArticles > 0"
     v-for="recette in sortArticles"
     :key="recette.id"
