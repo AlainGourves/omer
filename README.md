@@ -39,3 +39,14 @@ or
 ```sh
 bun run build
 ```
+
+__Note:__ Après le `build`, le script supprime le fichier `index.html` créé par Vite et tente de copier les fichiers JS et CSS dans le répertoire du plugin.
+
+Le chemin est à modifier en fonction de la situation dans `package.json`.
+
+Par exemple, en supposant, une version locale de Wordpress gérée avec [Local](https://localwp.com/), ça donne :
+
+```
+"$HOME/Local Sites/[répertoire de Wordpress]/app/public/wp-content/plugins/demi-sel-plugin/public/"
+```
+où `$HOME` donne le chemin de la racine du répertoire de l'utilisateur courant.

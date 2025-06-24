@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build && rm dist/index.html",
+    "build": "vite build && rm dist/index.html && rsync -av --delete dist/ \"$HOME/Local Sites/wp-omer/app/public/wp-content/plugins/demi-sel-plugin/public/\"",
     "preview": "vite preview",
     "format": "prettier --write src/"
   },
